@@ -1,7 +1,8 @@
 <?php
 
 echo "Che le ma";
-function sanitize_input($data) {
+function sanitize_input($data)
+{
     $data = trim($data); // remove leading or trailing
     $data = stripslashes($data); // remove backslashes in front of quotes
     $data = htmlspecialchars($data); // convert HTML control characters to the html code.
@@ -11,12 +12,13 @@ function sanitize_input($data) {
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     // if no post in form
     // redirect to jobs page
-    header("Location: jobs.php"); 
+    header("Location: jobs.php");
     exit;
 }
 
 $isValid = true;
 $errorMessages = array();
+$checkother_skills = false;
 
 $first_name = sanitize_input($_POST["first_name"]);
 $last_name = sanitize_input($_POST["last_name"]);
@@ -34,8 +36,33 @@ $status = sanitize_input($_POST["status"]);
 
 
 // check select atleast 1 skill.
-$selectedSkills = isset($_POST["issues"]) ? $_POST["issues"] : [];
-$skillsString = implode(",", $selectedSkills);
+$selectedSkills = [];
+if (isset($_POST["issues"])) {
+    $selectedSkills = isset($_POST["issues"]) ? $_POST["issues"] : [];
+    $skillsString = implode(",", $selectedSkills);
+} else {
+    if (count($selectedSkills) == 0) {
+        $isValid = false;
+        $errorMessages[] = "Select at least 1 Skill";
+    }
+}
+
+
+
+
+// print_r($selectedSkills);
+// if (isset($_POST['other_skills'])) {
+
+//     $other_skills = $_POST['other_skills'];
+//     $trimmed = trim($other_skills); //assign to variable
+
+//     if (empty($trimmed)) { //then check empty
+//         echo "Please fill in Other Skills";
+//     }
+
+// }
+
+// die();
 
 if (empty($first_name) || !preg_match("/^[a-zA-Z]{1,20}$/", $first_name)) {
     $isValid = false;
@@ -159,26 +186,39 @@ if (empty($postcode)) {
 }
 
 
-$skillError = "";
-$otherSkillsTextError = "";
-$other_skills = ""; // create empty variable
+// $skillError = "";
+// $otherSkillsTextError = "";
+// $other_skills = ""; // create empty variable
 
-if (isset($_POST['skill'])) {
-    $selectedSkills = $_POST['skill'];
+// if (isset($_POST['skill'])) {
+//     $selectedSkills = $_POST['skill'];
 
-    if (count($selectedSkills) === 0) {
-        $skillError = "Select at least 1 Skill";
+//     if (count($selectedSkills) === 0) {
+//         $skillError = "Select at least 1 Skill";
+//     }
+
+// }
+
+
+foreach ($selectedSkills as $key => $item):
+    if ($item == 'OtherSkills') {
+        $checkother_skills = true;
     }
-}
+endforeach;
 
-    //check other_skills
-if (isset($_POST['other_skills'])) {
 
+
+// if ($checkother_skills && empty($_POST['other_skills'])) {
+//     echo "error: missing";
+// }
+
+if ($checkother_skills) {
     $other_skills = $_POST['other_skills'];
     $trimmed = trim($other_skills); //assign to variable
 
     if (empty($trimmed)) { //then check empty
-        echo "Please fill in Other Skills";
+        $isValid = false;
+        $errorMessages[] = "Please fill in Other Skills";
     }
 
 }
@@ -194,9 +234,9 @@ if (!$isValid) {
     // The data will be recorded
     include 'settings.php';
 
-    $sql_table="eoi";
-$fieldDefinition=
-                      "EOInumber int AUTO_INCREMENT PRIMARY KEY,
+    $sql_table = "eoi";
+    $fieldDefinition =
+        "EOInumber int AUTO_INCREMENT PRIMARY KEY,
                       first_name varchar(50) NOT NULL,
                       last_name varchar(50) NOT NULL,
                       job_ref char(5) NOT NULL,
@@ -210,51 +250,52 @@ $fieldDefinition=
                       other_skills text DEFAULT NULL,
                       status varchar(20) NOT NULL,
                       created_at timestamp NOT NULL DEFAULT current_timestamp()";
-                    
 
-// check: if table does not exist, create it
-$sqlString = "show tables like '$sql_table'";  // another alternative is to just use 'create table if not exists ...'
-$result = @mysqli_query($conn, $sqlString);
-// checks if any tables of this name
-if(mysqli_num_rows($result)==0) {
-    echo "<p>Table does not exist - create table $sql_table</p>"; // Might not show in a production script 
-    $sqlString = "create table " . $sql_table . "(" . $fieldDefinition . ")";; 
-    $result2 = @mysqli_query($conn, $sqlString);
-    // checks if the table was created
-    if($result2===false) {
-        echo "<p class=\"wrong\">Unable to create Table $sql_table.". mysqli_error($conn) . ":". mysqli_error($conn) ." </p>"; //Would not show in a production script 
+
+    // check: if table does not exist, create it
+    $sqlString = "show tables like '$sql_table'"; // another alternative is to just use 'create table if not exists ...'
+    $result = @mysqli_query($conn, $sqlString);
+    // checks if any tables of this name
+    if (mysqli_num_rows($result) == 0) {
+        echo "<p>Table does not exist - create table $sql_table</p>"; // Might not show in a production script 
+        $sqlString = "create table " . $sql_table . "(" . $fieldDefinition . ")";
+        ;
+        $result2 = @mysqli_query($conn, $sqlString);
+        // checks if the table was created
+        if ($result2 === false) {
+            echo "<p class=\"wrong\">Unable to create Table $sql_table." . mysqli_error($conn) . ":" . mysqli_error($conn) . " </p>"; //Would not show in a production script 
+        } else {
+            // display an operation successful message
+            echo "<p class=\"ok\">Table $sql_table created OK</p>"; //it not show in a production script 
+        } // if successful query operation
+
     } else {
-    // display an operation successful message
-    echo "<p class=\"ok\">Table $sql_table created OK</p>"; //it not show in a production script 
+        // display an operation successful message
+        echo "<p>Table  $sql_table already exists</p>"; //Would not show in a production script 
     } // if successful query operation
 
-} else {
-    // display an operation successful message
-    echo "<p>Table  $sql_table already exists</p>"; //Would not show in a production script 
-} // if successful query operation
-
-// Set up the SQL command to add the data into the table
-$query = "INSERT INTO eoi (first_name, last_name, job_ref, email, phone, address, suburb_town, state, postcode, skills, other_skills, status) VALUES 
+    // Set up the SQL command to add the data into the table
+    $query = "INSERT INTO eoi (first_name, last_name, job_ref, email, phone, address, suburb_town, state, postcode, skills, other_skills, status) VALUES 
           ('$first_name', '$last_name', '$job_ref', '$email', '$phone', '$address', '$suburb_town', '$state', '$postcode', '$skillsString', '$other_skills', '$status')";
-            
-// execute the query
-$result = mysqli_query($conn, $query);
-// checks if the execution was successful
-if($result) {
 
-       // Retrive created automatic number.
-       $EOInumber = mysqli_insert_id($conn);
+    // execute the query
+    $result = mysqli_query($conn, $query);
+    // checks if the execution was successful
+    if ($result) {
 
-       // display an operation successful message
-       echo '<script>alert("Record success! EOI number is ' . $EOInumber . '");</script>';
-       echo '<script>window.location.href = "jobs.php";</script>'; //redirect to jobs page.
-   } else {
-       // record failure
-       echo '<script>alert("something is wrong with: ' . $conn->error . '");</script>';
-       echo '<script>window.location.href = "jobs.php";</script>';//redirect to jobs page.
-   }
-// close the database connection
-mysqli_close($conn);
-}  // if successful database connection
+        // Retrive created automatic number.
+        $EOInumber = mysqli_insert_id($conn);
+
+        // display an operation successful message
+        echo '<script>alert("Record success! EOI number is ' . $EOInumber . '");</script>';
+        echo '<script>window.location.href = "jobs.php";</script>'; //redirect to jobs page.
+    } else {
+        // record failure
+        echo '<script>alert("something is wrong with: ' . $conn->error . '");</script>';
+        echo '<script>window.location.href = "jobs.php";</script>'; //redirect to jobs page.
+    }
+    // close the database connection
+    mysqli_close($conn);
+} // if successful database connection
 
 
