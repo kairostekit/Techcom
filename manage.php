@@ -19,7 +19,7 @@ if ($search_ref == 'all') {
 }
 $ss = explode(' ', $searchText);
 $_sss = '';
-if (count($ss) == 2) {
+if (count($ss) >= 2) {
     $sqlText = "WHERE (first_name IN ('{$ss[0]}') AND  last_name IN ('{$ss[1]}')) ";
 } else {
     $sqlText = " WHERE (  first_name  LIKE '%$searchText%' OR  last_name LIKE '%$searchText%'  OR  address LIKE '%$searchText%' OR  suburb_town LIKE '%$searchText%' OR  email LIKE '%$searchText%' OR  phone LIKE '%$searchText%'   OR  skills LIKE '%$searchText%' OR  job_ref LIKE '%$searchText%' OR  postcode LIKE '%$searchText%')";
