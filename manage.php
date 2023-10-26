@@ -18,9 +18,19 @@ $sqlText = " WHERE ( first_name  LIKE '%{$ss[0]}%' OR  last_name LIKE '%{$ss[0]}
 
 $sql = "SELECT * FROM eoi $sqlText $sqlS";
 
+
 $result = $conn->query($sql);
 $row = $result->fetch_all(MYSQLI_ASSOC);
 
+
+
+$sqljob_ref = "SELECT job_ref FROM `eoi` GROUP BY job_ref ORDER BY `eoi`.`job_ref` ASC;";
+$result_ref = $conn->query($sqljob_ref);
+$row_ref = $result_ref->fetch_all(MYSQLI_ASSOC);
+
+// echo json_encode($row_ref);
+
+// die();
 ?>
 <!doctype html>
 <html lang="en">
@@ -68,7 +78,6 @@ $row = $result->fetch_all(MYSQLI_ASSOC);
             </center>
 
 
-
         </form>
         <form action="deleteEOI.php" method="post">
             <table class="" border="1" style=" border:1px solid black; ">
@@ -83,8 +92,20 @@ $row = $result->fetch_all(MYSQLI_ASSOC);
                         <th>phone</th>
                         <th>skills</th>
                         <th>Status</th>
-                        <th> <button type="submit" name="" class=" ">ลบที่เลือก</button> <button type="button"
-                                onclick="setDeleteEoi('all')" name="all" class=" ">ลบทั้งหมด</button></th>
+                        <th>
+                            <select id="job_ref" name="job_ref" class="">
+                                <option value=""> เลือก</option>
+                                <?php foreach ($row_ref as $key => $item): ?>
+                                    <option value="<?php echo $item['job_ref'] ?>">
+                                        <?php echo $item['job_ref'] ?>
+                                    </option>
+                                <?php endforeach; ?>
+
+                            </select>
+
+                            <button type="submit" name="" class=" ">ลบที่เลือก</button> <button type="button"
+                                onclick="setDeleteEoi('all')" name="all" class=" ">ลบทั้งหมด</button>
+                        </th>
 
 
                     </tr>
@@ -93,8 +114,8 @@ $row = $result->fetch_all(MYSQLI_ASSOC);
                     <?php foreach ($row as $key => $item): ?>
                         <tr style=" border:1px solid black; ">
                             <td>
-                                <?php echo ++$key ?> <input type="checkbox" name="EOInumber[]"
-                                    value="<?php echo $item['EOInumber'] ?>">
+                                <?php echo ++$key ?>
+                                <!-- <input type="checkbox" name="EOInumber[]" value="<?php echo $item['EOInumber'] ?>"> -->
                             </td>
                             <td>
                                 <?php echo $item['job_ref'] ?>

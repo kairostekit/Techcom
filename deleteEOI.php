@@ -2,8 +2,9 @@
 include 'settings.php';
 
 // 
-$EOInumber = isset($_POST['EOInumber']) ? $_POST['EOInumber'] : '';
+$job_ref = isset($_POST['job_ref']) ? $_POST['job_ref'] : null;
 $EOInumber_GET = isset($_GET['EOInumber']) ? $_GET['EOInumber'] : '';
+
 
 if (!empty($EOInumber_GET)) {
 
@@ -24,19 +25,18 @@ if (!empty($EOInumber_GET)) {
 
 }
 
-if (!empty($EOInumber)) {
-    foreach ($EOInumber as $key => $item):
-        $sql = "DELETE FROM eoi WHERE `eoi`.`EOInumber` = $item";
-        if ($conn->query($sql)) {
+if (!empty($job_ref)) {
 
-        }
-    endforeach;
-
+    $sql = "DELETE FROM eoi WHERE `eoi`.`job_ref` = '$job_ref'";
+    if ($conn->query($sql)) {
+        echo '<script>';
+        echo 'alert("ลบข้อมูลสำเร็จ");location.assign("manage.php");';
+        echo '</script>';
+    }
 
     echo '<script>';
-    echo 'alert("ลบข้อมูลสำเร็จ");location.assign("manage.php");';
+    echo 'alert("ลบข้อมูลไม่สำเร็จ");history.back(-1);';
     echo '</script>';
-
 
 } else {
     echo '<script>';
