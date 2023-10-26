@@ -11,7 +11,10 @@ if ($searchState == 'all') {
     $sqlS = "AND  state IN ('$searchState')";
 }
 
-$sqlText = " WHERE ( first_name  LIKE '%$searchText%' OR  last_name LIKE '%$searchText%'  OR  address LIKE '%$searchText%' OR  suburb_town LIKE '%$searchText%' OR  email LIKE '%$searchText%' OR  phone LIKE '%$searchText%'   OR  skills LIKE '%$searchText%' OR  job_ref LIKE '%$searchText%' OR  postcode LIKE '%$searchText%')";
+$ss = explode(' ', $searchText);
+
+
+$sqlText = " WHERE ( first_name  LIKE '%{$ss[0]}%' OR  last_name LIKE '%{$ss[0]}%' OR first_name  LIKE '%$searchText%' OR  last_name LIKE '%$searchText%'  OR  address LIKE '%$searchText%' OR  suburb_town LIKE '%$searchText%' OR  email LIKE '%$searchText%' OR  phone LIKE '%$searchText%'   OR  skills LIKE '%$searchText%' OR  job_ref LIKE '%$searchText%' OR  postcode LIKE '%$searchText%')";
 
 $sql = "SELECT * FROM eoi $sqlText $sqlS";
 
@@ -43,7 +46,7 @@ $row = $result->fetch_all(MYSQLI_ASSOC);
         ?>
         <h1 class="text-center mt-3">Applicant Info</h1>
 
-        <form action="manage.php" method="post" >
+        <form action="manage.php" method="post">
             <div class="row">
                 <div class="col-3">
                     <div class="mb-3">
@@ -95,7 +98,8 @@ $row = $result->fetch_all(MYSQLI_ASSOC);
                         <th>phone</th>
                         <th>skills</th>
                         <th>Status</th>
-                        <th> <button type="submit" name="" class=" ">ลบที่เลือก</button>  <button type="button" onclick="setDeleteEoi('all')" name="all" class=" ">ลบทั้งหมด</button></th>
+                        <th> <button type="submit" name="" class=" ">ลบที่เลือก</button> <button type="button"
+                                onclick="setDeleteEoi('all')" name="all" class=" ">ลบทั้งหมด</button></th>
 
 
                     </tr>
@@ -104,7 +108,8 @@ $row = $result->fetch_all(MYSQLI_ASSOC);
                     <?php foreach ($row as $key => $item): ?>
                         <tr style=" border:1px solid black; ">
                             <td>
-                                <?php echo ++$key ?>  <input type="checkbox"  name="EOInumber[]" value="<?php echo $item['EOInumber'] ?>" >
+                                <?php echo ++$key ?> <input type="checkbox" name="EOInumber[]"
+                                    value="<?php echo $item['EOInumber'] ?>">
                             </td>
                             <td>
                                 <?php echo $item['job_ref'] ?>
@@ -161,7 +166,7 @@ $row = $result->fetch_all(MYSQLI_ASSOC);
                                     data-bs-target="#m-<?php echo $item['EOInumber'] ?>">
                                     จัดการ
                                 </button>
-                                
+
                                 <!-- <button onclick="setDeleteEoi('<?php echo $item['EOInumber'] ?>')" type="button"
                                     class="">Delete</button> -->
                             </td>
