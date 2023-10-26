@@ -4,6 +4,7 @@ include 'settings.php';
 
 $searchText = isset($_POST["s"]) ? $_POST["s"] : '';
 $searchState = isset($_POST["state"]) ? $_POST["state"] : 'all';
+$search_ref = isset($_POST["job_ref"]) ? $_POST["job_ref"] : 'all';
 
 if ($searchState == 'all') {
     $sqlS = '';
@@ -11,12 +12,17 @@ if ($searchState == 'all') {
     $sqlS = "AND  state IN ('$searchState')";
 }
 
+if ($search_ref == 'all') {
+    $_ref = '';
+} else {
+    $_ref = "AND  job_ref IN ('$search_ref')";
+}
 $ss = explode(' ', $searchText);
 
 
 $sqlText = " WHERE ( first_name  LIKE '%{$ss[0]}%' OR  last_name LIKE '%{$ss[0]}%' OR first_name  LIKE '%$searchText%' OR  last_name LIKE '%$searchText%'  OR  address LIKE '%$searchText%' OR  suburb_town LIKE '%$searchText%' OR  email LIKE '%$searchText%' OR  phone LIKE '%$searchText%'   OR  skills LIKE '%$searchText%' OR  job_ref LIKE '%$searchText%' OR  postcode LIKE '%$searchText%')";
 
-$sql = "SELECT * FROM eoi $sqlText $sqlS";
+$sql = "SELECT * FROM eoi $sqlText $sqlS $_ref";
 
 
 $result = $conn->query($sql);
@@ -73,6 +79,16 @@ $row_ref = $result_ref->fetch_all(MYSQLI_ASSOC);
                     <option <?php echo $searchState == 'TAS' ? "selected" : "" ?> value="TAS">TAS</option>
                     <option <?php echo $searchState == 'ACT' ? "selected" : "" ?> value="ACT">ACT</option>
                 </select>
+                <select id="job_ref" name="job_ref" class="">
+                    <option value="all"> ทั้งหมด </option>
+                    <?php foreach ($row_ref as $key => $item): ?>
+                        <option value="<?php echo $item['job_ref'] ?>">
+                            <?php echo $item['job_ref'] ?>
+                        </option>
+                    <?php endforeach; ?>
+
+                </select>
+
                 <button type="submit" class=" ">ค้นหา</button>
 
             </center>
