@@ -91,122 +91,127 @@ $row_ref = $result_ref->fetch_all(MYSQLI_ASSOC);
 
                 <button type="submit" class=" ">ค้นหา</button>
 
-                <select id="job_ref" name="job_ref" class="">
-                    <option value=""> เลือก</option>
-                    <?php foreach ($row_ref as $key => $item): ?>
-                        <option value="<?php echo $item['job_ref'] ?>">
-                            <?php echo $item['job_ref'] ?>
-                        </option>
-                    <?php endforeach; ?>
-
-                </select>
-
-                <button type="submit" name="" class=" ">ลบที่เลือก</button>
             </center>
 
 
         </form>
         <form action="deleteEOI.php" method="post">
-            <table class="" border="1" style=" border:1px solid black; ">
-                <thead class="">
+            <center>
+
+            <select id="job_ref" name="job_ref" class="">
+                <option value=""> เลือก</option>
+                <?php foreach ($row_ref as $key => $item): ?>
+                    <option value="<?php echo $item['job_ref'] ?>">
+                        <?php echo $item['job_ref'] ?>
+                    </option>
+                <?php endforeach; ?>
+
+            </select>
+
+            <button type="submit" name="" class=" ">ลบที่เลือก</button>
+            </center>
+
+        </form>
+
+        <table class="" border="1" style=" border:1px solid black; ">
+            <thead class="">
+                <tr style=" border:1px solid black; ">
+                    <th>EOI No</th>
+                    <th>Job</th>
+                    <th>Name</th>
+                    <th>address</th>
+                    <th>state</th>
+                    <th>email</th>
+                    <th>phone</th>
+                    <th>skills</th>
+                    <th>Status</th>
+                    <th>
+
+                        <!-- <button type="button" onclick="setDeleteEoi('all')" name="all" class=" ">ลบทั้งหมด</button> -->
+                    </th>
+
+
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($row as $key => $item): ?>
                     <tr style=" border:1px solid black; ">
-                        <th>EOI No</th>
-                        <th>Job</th>
-                        <th>Name</th>
-                        <th>address</th>
-                        <th>state</th>
-                        <th>email</th>
-                        <th>phone</th>
-                        <th>skills</th>
-                        <th>Status</th>
-                        <th>
+                        <td>
+                            <?php echo ++$key ?>
+                            <!-- <input type="checkbox" name="EOInumber[]" value="<?php echo $item['EOInumber'] ?>"> -->
+                        </td>
+                        <td>
+                            <?php echo $item['job_ref'] ?>
+                        </td>
+                        <td>
+                            <?php echo $item['first_name'] . " " . $item['last_name'] ?>
+                        </td>
+                        <td>
+                            <p class="m-0 p-0">address :
+                                <?php echo $item['address'] ?>
+                            </p>
+                            <p class="m-0 p-0">suburb_town :
+                                <?php echo $item['suburb_town'] ?>
+                            </p>
+                            <p class="m-0 p-0">postcode :
+                                <?php echo $item['postcode'] ?>
+                            </p>
 
-                            <!-- <button type="button" onclick="setDeleteEoi('all')" name="all" class=" ">ลบทั้งหมด</button> -->
-                        </th>
+                        </td>
+                        <td>
+                            <?php echo $item['state'] ?>
+                        </td>
+                        <td>
+                            <?php echo $item['email'] ?>
+                        </td>
+                        <td>
+                            <?php echo $item['phone'] ?>
+                        </td>
+                        <td>
+                            <p class="m-0 p-0">skills :
+                                <?php echo $item['skills'] ?>
+                            </p>
+                            <p class="m-0 p-0">other_skills :
+                                <?php echo empty($item['other_skills']) ? "-" : $item['other_skills'] ?>
+                            </p>
+                        </td>
+                        <td>
+                            <?php
+                            switch (strtoupper($item['status'])) {
+                                case 'NEW':
+                                    echo '<span class="">New</span>';
+                                    break;
+                                case 'CURRENT':
+                                    echo '<span class="">Current</span>';
+                                    break;
+                                case 'FINAL':
+                                    echo '<span class="">Final</span>';
+                                    break;
+                            } ?>
+                        </td>
+                        <td>
+                            <!-- <a href="jobs.php?EOInumber=<?php echo $item['EOInumber'] ?>" class=" ">description</a> -->
 
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($row as $key => $item): ?>
-                        <tr style=" border:1px solid black; ">
-                            <td>
-                                <?php echo ++$key ?>
-                                <!-- <input type="checkbox" name="EOInumber[]" value="<?php echo $item['EOInumber'] ?>"> -->
-                            </td>
-                            <td>
-                                <?php echo $item['job_ref'] ?>
-                            </td>
-                            <td>
-                                <?php echo $item['first_name'] . " " . $item['last_name'] ?>
-                            </td>
-                            <td>
-                                <p class="m-0 p-0">address :
-                                    <?php echo $item['address'] ?>
-                                </p>
-                                <p class="m-0 p-0">suburb_town :
-                                    <?php echo $item['suburb_town'] ?>
-                                </p>
-                                <p class="m-0 p-0">postcode :
-                                    <?php echo $item['postcode'] ?>
-                                </p>
-
-                            </td>
-                            <td>
-                                <?php echo $item['state'] ?>
-                            </td>
-                            <td>
-                                <?php echo $item['email'] ?>
-                            </td>
-                            <td>
-                                <?php echo $item['phone'] ?>
-                            </td>
-                            <td>
-                                <p class="m-0 p-0">skills :
-                                    <?php echo $item['skills'] ?>
-                                </p>
-                                <p class="m-0 p-0">other_skills :
-                                    <?php echo empty($item['other_skills']) ? "-" : $item['other_skills'] ?>
-                                </p>
-                            </td>
-                            <td>
-                                <?php
-                                switch (strtoupper($item['status'])) {
-                                    case 'NEW':
-                                        echo '<span class="">New</span>';
-                                        break;
-                                    case 'CURRENT':
-                                        echo '<span class="">Current</span>';
-                                        break;
-                                    case 'FINAL':
-                                        echo '<span class="">Final</span>';
-                                        break;
-                                } ?>
-                            </td>
-                            <td>
-                                <!-- <a href="jobs.php?EOInumber=<?php echo $item['EOInumber'] ?>" class=" ">description</a> -->
-
-                                <a href="edit.php?EOInumber=<?php echo $item['EOInumber'] ?>" class=" ">แก้ไข</a>
+                            <a href="edit.php?EOInumber=<?php echo $item['EOInumber'] ?>" class=" ">แก้ไข</a>
 
 
-                                <!-- <button onclick="setDeleteEoi('<?php echo $item['EOInumber'] ?>')" type="button"
+                            <!-- <button onclick="setDeleteEoi('<?php echo $item['EOInumber'] ?>')" type="button"
                                     class="">Delete</button> -->
-                            </td>
-                            <div class="modal fade" id="m-<?php echo $item['EOInumber'] ?>" tabindex="-1"
-                                aria-labelledby=" Label" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
+                        </td>
+                        <div class="modal fade" id="m-<?php echo $item['EOInumber'] ?>" tabindex="-1"
+                            aria-labelledby=" Label" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
 
-                                    </div>
                                 </div>
                             </div>
+                        </div>
 
-                        </tr>
-                    <?php endforeach; ?>
+                    </tr>
+                <?php endforeach; ?>
 
-                </tbody>
-            </table>
-        </form>
+            </tbody>
+        </table>
 
 
     </div>
