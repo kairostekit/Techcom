@@ -147,10 +147,7 @@ $row = $result->fetch_all(MYSQLI_ASSOC);
                             </td>
                             <td>
                                 <a href="jobs.php?EOInumber=<?php echo $item['EOInumber'] ?>" class=" ">description</a>
-                                <button type="button" class=" " data-bs-toggle="modal"
-                                    data-bs-target="#m-<?php echo $item['EOInumber'] ?>">
-                                    จัดการ
-                                </button>
+
                                 <a href="edit.php?EOInumber=<?php echo $item['EOInumber'] ?>" class=" ">แก้ไข</a>
 
 

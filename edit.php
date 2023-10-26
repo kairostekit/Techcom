@@ -13,6 +13,7 @@
 
 <body>
     <?php include_once("header.inc"); ?>
+    <?php include_once("menu.inc"); ?>
 
 
     <?php
@@ -26,7 +27,7 @@
     ?>
 
 
-    <fieldset style=" margin: 30px; ">
+    <center style=" margin: 30px; ">
 
         <form id="form-m-<?php echo $_GET['EOInumber'] ?>" action="updateEOI.php" method="post">
             <input type="hidden" name="EOInumber" value="<?php echo $_GET['EOInumber'] ?>">
@@ -48,6 +49,8 @@
                     </option>
                 </select>
             </div>
+            <br>
+            <br>
 
 
             <button type="button" onclick="history.back(-1)" class="">ยกเลิกแก้ไข</button>
@@ -55,7 +58,7 @@
 
         </form>
 
-    </fieldset>
+    </center>
 
     <?php include_once("footer.inc"); ?>
 

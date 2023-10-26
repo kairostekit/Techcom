@@ -9,6 +9,7 @@
             <li><a href="mailto:103503476@student.swin.edu.au">Contact</a></li>
             <li><a href="login.php">Login</a></li>
             <li><a href="phpenhancements.php">phpenhancements</a></li>
+            <li><a href="manage.php">manage</a></li>
 
         </ul>
     </nav>
