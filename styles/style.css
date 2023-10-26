@@ -4,6 +4,9 @@ author: [Pornkanok]
 create: [22/8/23]
 description: style.html
 */
+/* table, th, td {
+    border:1px solid black;
+} */
 header {
     color: black;
     text-align: center;
