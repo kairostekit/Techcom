@@ -29,13 +29,17 @@ $row = $result->fetch_all(MYSQLI_ASSOC);
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <link rel="stylesheet" href="styles/style.css" />
+    <script src="scripts/enhancements.js"></script>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
     <title>Search Applicant Info</title>
 </head>
 
 <body>
+
+    <?php include_once("header.inc"); ?>
+    <?php include_once("menu.inc"); ?>
     <div class="container-fluid">
         <?php
 
@@ -43,46 +47,31 @@ $row = $result->fetch_all(MYSQLI_ASSOC);
         <h1 class="text-center mt-3">Applicant Info</h1>
 
         <form action="manage.php" method="post">
-            <div class="row">
-                <div class="col-3">
-                    <div class="mb-3">
-                        <!-- <label for="exampleInputEmail1" class="form-label">Email address</label> -->
-                        <input type="text" class="" name="s" value="<?php echo $searchText ?>"
-                            placeholder="กรอกรายละเอียด">
 
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="mb-3">
+            <center class="" style="align-self : center; margin: 30px; ">
+                <!-- <label for="exampleInputEmail1" class="form-label">Email address</label> -->
+                <input type="text" class="" name="s" value="<?php echo $searchText ?>" placeholder="กรอกรายละเอียด">
+                <select id="state" name="state" class="">
+                    <option <?php echo $searchState == 'all' ? "selected" : "" ?> value="all">---- ทั้งหมด ----
+                    </option>
+                    <option <?php echo $searchState == 'VIC' ? "selected" : "" ?> value="VIC">VIC</option>
+                    <option <?php echo $searchState == 'NSW' ? "selected" : "" ?> value="NSW">NSW</option>
+                    <option <?php echo $searchState == 'QLD' ? "selected" : "" ?> value="QLD">QLD</option>
+                    <option <?php echo $searchState == 'NT' ? "selected" : "" ?> value="NT">NT</option>
+                    <option <?php echo $searchState == 'WA' ? "selected" : "" ?> value="WA">WA</option>
+                    <option <?php echo $searchState == 'SA' ? "selected" : "" ?> value="SA">SA</option>
+                    <option <?php echo $searchState == 'TAS' ? "selected" : "" ?> value="TAS">TAS</option>
+                    <option <?php echo $searchState == 'ACT' ? "selected" : "" ?> value="ACT">ACT</option>
+                </select>
+                <button type="submit" class=" ">ค้นหา</button>
 
-                        <select id="state" name="state" class="">
-                            <option <?php echo $searchState == 'all' ? "selected" : "" ?> value="all">---- ทั้งหมด ----
-                            </option>
-                            <option <?php echo $searchState == 'VIC' ? "selected" : "" ?> value="VIC">VIC</option>
-                            <option <?php echo $searchState == 'NSW' ? "selected" : "" ?> value="NSW">NSW</option>
-                            <option <?php echo $searchState == 'QLD' ? "selected" : "" ?> value="QLD">QLD</option>
-                            <option <?php echo $searchState == 'NT' ? "selected" : "" ?> value="NT">NT</option>
-                            <option <?php echo $searchState == 'WA' ? "selected" : "" ?> value="WA">WA</option>
-                            <option <?php echo $searchState == 'SA' ? "selected" : "" ?> value="SA">SA</option>
-                            <option <?php echo $searchState == 'TAS' ? "selected" : "" ?> value="TAS">TAS</option>
-                            <option <?php echo $searchState == 'ACT' ? "selected" : "" ?> value="ACT">ACT</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-3">
-                    <div class="mb-3">
-                        <button type="submit" class=" ">ค้นหา</button>
+            </center>
 
-                    </div>
-                </div>
-
-                <div class="col-2"></div>
-            </div>
 
 
         </form>
         <form action="deleteEOI.php" method="post">
-            <table class="" border="1" style="width: 100%;  border:1px solid black; ">
+            <table class="" border="1" style=" border:1px solid black; ">
                 <thead class="">
                     <tr style=" border:1px solid black; ">
                         <th>EOI No</th>
@@ -162,6 +151,8 @@ $row = $result->fetch_all(MYSQLI_ASSOC);
                                     data-bs-target="#m-<?php echo $item['EOInumber'] ?>">
                                     จัดการ
                                 </button>
+                                <a href="edit.php?EOInumber=<?php echo $item['EOInumber'] ?>" class=" ">แก้ไข</a>
+
 
                                 <!-- <button onclick="setDeleteEoi('<?php echo $item['EOInumber'] ?>')" type="button"
                                     class="">Delete</button> -->
@@ -170,34 +161,7 @@ $row = $result->fetch_all(MYSQLI_ASSOC);
                                 aria-labelledby=" Label" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
-                                        <form action="updateEOI.php" method="post">
-                                            <input type="hidden" name="EOInumber" value="<?php echo $item['EOInumber'] ?>">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id=" Label">
-                                                    <?php echo $item['job_ref'] ?> :
-                                                    <?php echo $item['first_name'] . " " . $item['last_name'] ?>
-                                                </h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="mb-3">
-                                                    <label for="exampleInputEmail1" class="form-label">อัพเดตสถานะ </label>
-                                                    <select name="status" class="" aria-label="Default select example">
-                                                        <!-- <option selected>---- เลือก ----</option> -->
-                                                        <option <?php echo strtoupper($item['status']) == 'NEW' ? "selected" : "" ?> value="NEW">NEW</option>
-                                                        <option <?php echo strtoupper($item['status']) == 'CURRENT' ? "selected" : "" ?> value="CURRENT">CURRENT</option>
-                                                        <option <?php echo strtoupper($item['status']) == 'FINAL' ? "selected" : "" ?> value="FINAL">FINAL</option>
-                                                    </select>
-                                                </div>
 
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="" data-bs-dismiss="modal">ปิด</button>
-                                                <button type="submit" class=" ">บันทึก</button>
-
-                                            </div>
-                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -219,7 +183,8 @@ $row = $result->fetch_all(MYSQLI_ASSOC);
             }
         }
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
+    <?php include_once("footer.inc"); ?>
 
 </body>
 
