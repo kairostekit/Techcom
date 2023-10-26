@@ -18,11 +18,16 @@ if ($search_ref == 'all') {
     $_ref = "AND  job_ref IN ('$search_ref')";
 }
 $ss = explode(' ', $searchText);
+$_sss = '';
+if (count($ss) == 2) {
+    $sqlText = "WHERE (first_name IN ('{$ss[0]}') AND  last_name IN ('{$ss[1]}')) ";
+} else {
+    $sqlText = " WHERE (  first_name  LIKE '%$searchText%' OR  last_name LIKE '%$searchText%'  OR  address LIKE '%$searchText%' OR  suburb_town LIKE '%$searchText%' OR  email LIKE '%$searchText%' OR  phone LIKE '%$searchText%'   OR  skills LIKE '%$searchText%' OR  job_ref LIKE '%$searchText%' OR  postcode LIKE '%$searchText%')";
+}
 
 
-$sqlText = " WHERE ( first_name  LIKE '%{$ss[0]}%' OR  last_name LIKE '%{$ss[0]}%' OR first_name  LIKE '%$searchText%' OR  last_name LIKE '%$searchText%'  OR  address LIKE '%$searchText%' OR  suburb_town LIKE '%$searchText%' OR  email LIKE '%$searchText%' OR  phone LIKE '%$searchText%'   OR  skills LIKE '%$searchText%' OR  job_ref LIKE '%$searchText%' OR  postcode LIKE '%$searchText%')";
 
-$sql = "SELECT * FROM eoi $sqlText $sqlS $_ref";
+$sql = "SELECT * FROM eoi $sqlText $sqlS $_ref ";
 
 
 $result = $conn->query($sql);
