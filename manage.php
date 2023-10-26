@@ -67,9 +67,9 @@ $row_ref = $result_ref->fetch_all(MYSQLI_ASSOC);
             <center class="" style="align-self : center; margin: 30px; ">
                 <!-- <label for="exampleInputEmail1" class="form-label">Email address</label> -->
                 <input type="text" class="" name="s" value="<?php echo $searchText ?>" placeholder="กรอกรายละเอียด">
-                <select id="state" name="state" class="">
-                    <!-- <option <?php echo $searchState == 'all' ? "selected" : "" ?> value="all">---- ทั้งหมด ----
-                    </option> -->
+                <!-- <select id="state" name="state" class="">
+                    <option <?php echo $searchState == 'all' ? "selected" : "" ?> value="all">
+                    </option>
                     <option <?php echo $searchState == 'VIC' ? "selected" : "" ?> value="VIC">VIC</option>
                     <option <?php echo $searchState == 'NSW' ? "selected" : "" ?> value="NSW">NSW</option>
                     <option <?php echo $searchState == 'QLD' ? "selected" : "" ?> value="QLD">QLD</option>
@@ -80,14 +80,14 @@ $row_ref = $result_ref->fetch_all(MYSQLI_ASSOC);
                     <option <?php echo $searchState == 'ACT' ? "selected" : "" ?> value="ACT">ACT</option>
                 </select>
                 <select id="job_ref" name="job_ref" class="">
-                    <!-- <option value="all"> ทั้งหมด </option> -->
+                    <option value="all"> </option>
                     <?php foreach ($row_ref as $key => $item): ?>
                         <option value="<?php echo $item['job_ref'] ?>">
                             <?php echo $item['job_ref'] ?>
                         </option>
                     <?php endforeach; ?>
 
-                </select>
+                </select> -->
 
                 <button type="submit" class=" ">ค้นหา</button>
 
@@ -98,17 +98,17 @@ $row_ref = $result_ref->fetch_all(MYSQLI_ASSOC);
         <form action="deleteEOI.php" method="post">
             <center>
 
-            <select id="job_ref" name="job_ref" class="">
-                <option value=""> เลือก</option>
-                <?php foreach ($row_ref as $key => $item): ?>
-                    <option value="<?php echo $item['job_ref'] ?>">
-                        <?php echo $item['job_ref'] ?>
-                    </option>
-                <?php endforeach; ?>
+                <select id="job_ref" name="job_ref" class="">
+                    <option value=""> เลือก</option>
+                    <?php foreach ($row_ref as $key => $item): ?>
+                        <option value="<?php echo $item['job_ref'] ?>">
+                            <?php echo $item['job_ref'] ?>
+                        </option>
+                    <?php endforeach; ?>
 
-            </select>
+                </select>
 
-            <button type="submit" name="" class=" ">ลบที่เลือก</button>
+                <button type="submit" name="" class=" ">ลบที่เลือก</button>
             </center>
 
         </form>
@@ -137,7 +137,7 @@ $row_ref = $result_ref->fetch_all(MYSQLI_ASSOC);
                 <?php foreach ($row as $key => $item): ?>
                     <tr style=" border:1px solid black; ">
                         <td>
-                            <?php echo ++$key ?>
+                            <?php echo $item['EOInumber'] ?>
                             <!-- <input type="checkbox" name="EOInumber[]" value="<?php echo $item['EOInumber'] ?>"> -->
                         </td>
                         <td>
