@@ -37,6 +37,7 @@ $status = sanitize_input($_POST["status"]);
 
 // check select atleast 1 skill.
 $selectedSkills = [];
+
 if (isset($_POST["issues"])) {
     $selectedSkills = isset($_POST["issues"]) ? $_POST["issues"] : [];
     $skillsString = implode(",", $selectedSkills);
@@ -198,20 +199,36 @@ if (empty($postcode)) {
 //     }
 
 // }
+$skills = '';
+$skills2 = '';
+$skills3 = '';
 
-
+$oni = 0;
 foreach ($selectedSkills as $key => $item):
+
     if ($item == 'OtherSkills') {
         $checkother_skills = true;
+    } else {
+
+        switch ($oni) {
+            case 0:
+                $skills = $item;
+                $oni++;
+                break;
+            case 1:
+                $skills2 = $item;
+                $oni++;
+                break;
+            case 2:
+                $skills3 = $item;
+                $oni++;
+                break;
+        }
     }
 endforeach;
 
 
-
-// if ($checkother_skills && empty($_POST['other_skills'])) {
-//     echo "error: missing";
-// }
-
+$other_skills = '';
 if ($checkother_skills) {
     $other_skills = $_POST['other_skills'];
     $trimmed = trim($other_skills); //assign to variable
@@ -246,20 +263,25 @@ if (!$isValid) {
                       postcode char(4) NOT NULL,
                       email varchar(100) NOT NULL,
                       phone varchar(12) NOT NULL,
-                      skills varchar(255) NOT NULL,
+                      skills varchar(255) NULL,
+                      skills2 varchar(255) NULL,
+                      skills3 varchar(255) NULL,
                       other_skills text DEFAULT NULL,
                       status varchar(20) NOT NULL,
                       created_at timestamp NOT NULL DEFAULT current_timestamp()";
 
+    //   skill1 varchar(255) NULL,
+    //   skill2 varchar(255) NULL,
+    //   skill3 varchar(255) NULL,
+
 
     // check: if table does not exist, create it
-    $sqlString = "show tables like '$sql_table'"; // another alternative is to just use 'create table if not exists ...'
+    $sqlString = "SHOW TABLES like '$sql_table'"; // another alternative is to just use 'create table if not exists ...'
     $result = @mysqli_query($conn, $sqlString);
     // checks if any tables of this name
     if (mysqli_num_rows($result) == 0) {
         echo "<p>Table does not exist - create table $sql_table</p>"; // Might not show in a production script 
-        $sqlString = "create table " . $sql_table . "(" . $fieldDefinition . ")";
-        ;
+        $sqlString = "create table $dbname.$sql_table ({$fieldDefinition});";
         $result2 = @mysqli_query($conn, $sqlString);
         // checks if the table was created
         if ($result2 === false) {
@@ -275,8 +297,8 @@ if (!$isValid) {
     } // if successful query operation
 
     // Set up the SQL command to add the data into the table
-    $query = "INSERT INTO eoi (first_name, last_name, job_ref, email, phone, address, suburb_town, state, postcode, skills, other_skills, status) VALUES 
-          ('$first_name', '$last_name', '$job_ref', '$email', '$phone', '$address', '$suburb_town', '$state', '$postcode', '$skillsString', '$other_skills', '$status')";
+    $query = "INSERT INTO eoi (first_name, last_name, job_ref, email, phone, address, suburb_town, state, postcode, skills ,skills2 ,skills3, other_skills, status) VALUES 
+          ('$first_name', '$last_name', '$job_ref', '$email', '$phone', '$address', '$suburb_town', '$state', '$postcode', '$skills' ,'$skills2','$skills3', '$other_skills', '$status')";
 
     // execute the query
     $result = mysqli_query($conn, $query);
@@ -286,13 +308,18 @@ if (!$isValid) {
         // Retrive created automatic number.
         $EOInumber = mysqli_insert_id($conn);
 
+        // Table eoi already exists
+        echo "Record success! EOI number is ' . $EOInumber . '";
+        header("Refresh:3; url=jobs.php", true, 303);
         // display an operation successful message
-        echo '<script>alert("Record success! EOI number is ' . $EOInumber . '");</script>';
-        echo '<script>window.location.href = "jobs.php";</script>'; //redirect to jobs page.
+        // echo '<script>alert("Record success! EOI number is ' . $EOInumber . '");</script>';
+        // echo '<script>window.location.href = "jobs.php";</script>'; //redirect to jobs page.
     } else {
         // record failure
-        echo '<script>alert("something is wrong with: ' . $conn->error . '");</script>';
-        echo '<script>window.location.href = "jobs.php";</script>'; //redirect to jobs page.
+        echo "something is wrong with: ' . $conn->error . '";
+        header("Refresh:3; url=jobs.php", true, 303);
+        // echo '<script>alert("something is wrong with: ' . $conn->error . '");</script>';
+        // echo '<script>window.location.href = "jobs.php";</script>'; //redirect to jobs page.
     }
     // close the database connection
     mysqli_close($conn);

@@ -128,7 +128,10 @@ $row_ref = $result_ref->fetch_all(MYSQLI_ASSOC);
                     <th>state</th>
                     <th>email</th>
                     <th>phone</th>
-                    <th>skills</th>
+                    <th>skills1</th>
+                    <th>skills2</th>
+                    <th>skills3</th>
+                    <th>other skills</th>
                     <th>Status</th>
                     <th>
 
@@ -173,12 +176,16 @@ $row_ref = $result_ref->fetch_all(MYSQLI_ASSOC);
                             <?php echo $item['phone'] ?>
                         </td>
                         <td>
-                            <p class="m-0 p-0">skills :
-                                <?php echo $item['skills'] ?>
-                            </p>
-                            <p class="m-0 p-0">other_skills :
-                                <?php echo empty($item['other_skills']) ? "-" : $item['other_skills'] ?>
-                            </p>
+                            <?php echo $item['skills'] ?>
+                        </td>
+                        <td>
+                            <?php echo $item['skills2'] ?>
+                        </td>
+                        <td>
+                            <?php echo $item['skills3'] ?>
+                        </td>
+                        <td>
+                            <?php echo empty($item['other_skills']) ? "" : $item['other_skills'] ?>
                         </td>
                         <td>
                             <?php
