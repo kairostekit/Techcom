@@ -65,11 +65,11 @@ $row_ref = $result_ref->fetch_all(MYSQLI_ASSOC);
         <?php
 
         ?>
-        <h1 class="text-center mt-3">Applicant Info</h1>
+        <h1 class="text-center ">Applicant Info</h1>
+        <center class="" style="align-self : center; margin: 30px; ">
 
         <form action="manage.php" method="post">
 
-            <center class="" style="align-self : center; margin: 30px; ">
                 <!-- <label for="exampleInputEmail1" class="form-label">Email address</label> -->
                 <input type="text" class="" name="s" value="<?php echo $searchText ?>" placeholder="กรอกรายละเอียด">
                 <!-- <select id="state" name="state" class="">
@@ -96,7 +96,6 @@ $row_ref = $result_ref->fetch_all(MYSQLI_ASSOC);
 
                 <button type="submit" class=" ">ค้นหา</button>
 
-            </center>
 
 
         </form>
@@ -117,6 +116,7 @@ $row_ref = $result_ref->fetch_all(MYSQLI_ASSOC);
             </center>
 
         </form>
+        </center>
 
         <table class="" border="1" style=" border:1px solid black; ">
             <thead class="">
@@ -221,9 +221,19 @@ $row_ref = $result_ref->fetch_all(MYSQLI_ASSOC);
 
                     </tr>
                 <?php endforeach; ?>
+                <tr>
+                    <td colspan="12" >
+                        <h3>
+                            <?php echo empty($row) ? "Emty Data" : "" ?>
+                        </h3>
+                    </td>
+                </tr>
 
             </tbody>
+
+
         </table>
+
 
 
     </div>
