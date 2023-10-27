@@ -20,19 +20,18 @@ $isValid = true;
 $errorMessages = array();
 $checkother_skills = false;
 
-$first_name = sanitize_input($_POST["first_name"]);
-$last_name = sanitize_input($_POST["last_name"]);
-$job_ref = sanitize_input($_POST["job_ref"]);
-$dob = sanitize_input($_POST["dob"]);
-$gender = sanitize_input($_POST["gender"]);
+$first_name = sanitize_input(isset($_POST["first_name"]) ? $_POST["first_name"] : "");
+$last_name = sanitize_input(isset($_POST["last_name"]) ? $_POST["last_name"] : "");
+$job_ref = sanitize_input(isset($_POST["job_ref"]) ? $_POST["job_ref"] : "");
+$dob = sanitize_input(isset($_POST["dob"]) ? $_POST["dob"] : '');
+$gender = sanitize_input(isset($_POST["gender"]) ? $_POST["gender"] : "");
 $email = sanitize_input($_POST["email"]);
 $phone = sanitize_input($_POST["phone"]);
 $address = sanitize_input($_POST["address"]);
-$suburb_town = sanitize_input($_POST["suburb_town"]);
-$state = sanitize_input($_POST["state"]);
-$postcode = sanitize_input($_POST["postcode"]);
+$suburb_town = sanitize_input(isset($_POST["suburb_town"]) ? $_POST["suburb_town"] : '');
+$state = sanitize_input(isset($_POST["state"]) ? $_POST["state"] : '');
+$postcode = sanitize_input(isset($_POST["postcode"]) ? $_POST["postcode"] : '');
 $status = sanitize_input($_POST["status"]);
-
 
 
 // check select atleast 1 skill.
@@ -131,7 +130,7 @@ if (empty($state)) {
     $errorMessages[] = "Plese select incorrect state";
 }
 
-if (empty($postcode)) {
+if (!empty($postcode)) {
     $selectedstate = $state;
 
     switch ($selectedstate) {
@@ -184,6 +183,9 @@ if (empty($postcode)) {
             }
             break;
     }
+} else {
+    $isValid = false;
+    $errorMessages[] = "enter data postcode ";
 }
 
 
