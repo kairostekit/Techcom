@@ -19,18 +19,24 @@
     <?php
     include 'settings.php';
 
-    $sql = "SELECT * FROM eoi WHERE EOInumber = {$_GET['EOInumber']} ";
+    // echo $_POST['EOInumber'];
+    // die();
+
+    $sql = "SELECT * FROM eoi WHERE EOInumber = {$_POST['EOInumber']} ";
 
     $result = $conn->query($sql);
     $item = $result->fetch_all(MYSQLI_ASSOC)[0];
 
+
+    // echo json_encode($item);
+    // die();
     ?>
 
 
     <center style=" margin: 30px; ">
 
-        <form id="form-m-<?php echo $_GET['EOInumber'] ?>" action="updateEOI.php" method="post">
-            <input type="hidden" name="EOInumber" value="<?php echo $_GET['EOInumber'] ?>">
+        <form id="edit"   action="updateEOI.php" method="post">
+            <input type="hidden" name="EOInumber" value="<?php echo $_POST['EOInumber'] ?>">
             <h1 class="modal-title fs-5" id=" Label">
                 <?php echo $item['job_ref'] ?> :
                 <?php echo $item['first_name'] . " " . $item['last_name'] ?>

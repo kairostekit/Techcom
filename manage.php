@@ -204,7 +204,11 @@ $row_ref = $result_ref->fetch_all(MYSQLI_ASSOC);
                         <td>
                             <!-- <a href="jobs.php?EOInumber=<?php echo $item['EOInumber'] ?>" class=" ">description</a> -->
 
-                            <a href="edit.php?EOInumber=<?php echo $item['EOInumber'] ?>" class=" ">แก้ไข</a>
+                            <form action="editEOI.php" method="post">
+                                <input type="hidden" name="EOInumber" value="<?php echo $item['EOInumber'] ?>" >
+                                <button type=" submit "  > แก้ไข </button>
+                            </form>
+                            <!-- <a href="edit.php?EOInumber=<?php echo $item['EOInumber'] ?>" class=" ">แก้ไข</a> -->
 
 
                             <!-- <button onclick="setDeleteEoi('<?php echo $item['EOInumber'] ?>')" type="button"

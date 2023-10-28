@@ -3,27 +3,27 @@ include 'settings.php';
 
 // 
 $job_ref = isset($_POST['job_ref']) ? $_POST['job_ref'] : null;
-$EOInumber_GET = isset($_GET['EOInumber']) ? $_GET['EOInumber'] : '';
+// $EOInumber_GET = isset($_GET['EOInumber']) ? $_GET['EOInumber'] : '';
 
 
-if (!empty($EOInumber_GET)) {
+// if (!empty($EOInumber_GET)) {
 
-    $sql = "SELECT * FROM eoi";
+//     $sql = "SELECT * FROM eoi";
 
-    $result = $conn->query($sql);
-    $row = $result->fetch_all(MYSQLI_ASSOC);
-    foreach ($row as $key => $item):
-        $sql = "DELETE FROM eoi WHERE `eoi`.`EOInumber` = {$item['EOInumber']}";
-        if ($conn->query($sql)) {
+//     $result = $conn->query($sql);
+//     $row = $result->fetch_all(MYSQLI_ASSOC);
+//     foreach ($row as $key => $item):
+//         $sql = "DELETE FROM eoi WHERE `eoi`.`EOInumber` = {$item['EOInumber']}";
+//         if ($conn->query($sql)) {
 
-        }
-    endforeach;
+//         }
+//     endforeach;
 
-    echo '<script>';
-    echo 'alert("ลบข้อมูลสำเร็จ");location.assign("manage.php");';
-    echo '</script>';
+//     echo '<script>';
+//     echo 'alert("ลบข้อมูลสำเร็จ");location.assign("manage.php");';
+//     echo '</script>';
 
-}
+// }
 
 if (!empty($job_ref)) {
 

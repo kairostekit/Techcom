@@ -5,6 +5,7 @@ include 'settings.php';
 $EOInumber = isset($_POST['EOInumber']) ? $_POST['EOInumber'] : '';
 $State = isset($_POST["status"]) ? $_POST["status"] : '';
 
+
 if (!empty($EOInumber) || !empty($State)) {
 
     switch (strtoupper($State)) {
